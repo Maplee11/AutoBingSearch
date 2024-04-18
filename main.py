@@ -1,16 +1,39 @@
-# 这是一个示例 Python 脚本。
-
-# 按 Shift+F10 执行或将其替换为您的代码。
-# 按 双击 Shift 在所有地方搜索类、文件、工具窗口、操作和设置。
-
-
-def print_hi(name):
-    # 在下面的代码行中使用断点来调试脚本。
-    print(f'Hi, {name}')  # 按 Ctrl+F8 切换断点。
+import pyautogui
+import time
+import random
+import string
+from tqdm import tqdm
+from termcolor import colored
+import threading
 
 
-# 按间距中的绿色按钮以运行脚本。
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def show_cur_mouse_coordinate():
+    pre_mouse_x, pre_mouse_y = pyautogui.position()
+    while True:
+        current_mouse_x, current_mouse_y = pyautogui.position()
+        if current_mouse_x != pre_mouse_x or current_mouse_y != pre_mouse_y:
+            pre_mouse_x = current_mouse_x
+            pre_mouse_y = current_mouse_y
+            print(f"\r当前鼠标坐标：({current_mouse_x}, {current_mouse_y})", end="")
 
-# 访问 https://www.jetbrains.com/help/pycharm/ 获取 PyCharm 帮助
+
+def do_search(search_bar_x, search_bar_y):
+    pyautogui.moveTo(search_bar_x, search_bar_y, duration=0.2)
+    pyautogui.click()
+    characters = string.ascii_letters + string.digits
+    length = 6
+    query = ''.join(random.choices(characters, k=length))
+    pyautogui.typewrite(query+'\n', interval=0.1)
+    pyautogui.press('enter')
+
+
+# 监控鼠标指针坐标
+# mouse_coordinate_monitor = threading.Thread(target=show_cur_mouse_coordinate)
+# mouse_coordinate_monitor.start()
+
+num_of_search = 30
+
+for _ in tqdm(range(4), colour='green'):
+    do_search(-2200, 20)  # 搜索栏坐标
+
+print(colored("Search done.", 'blue'))
