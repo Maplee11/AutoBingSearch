@@ -43,7 +43,7 @@ exit_monitor = threading.Thread(target=exit_monitor)
 exit_monitor.start()
 
 # 搜索次数
-num_of_search = 20
+num_of_search = 30
 
 # 搜索栏坐标
 search_bar_x = -2200
