@@ -5,6 +5,13 @@ import string
 from tqdm import tqdm
 from termcolor import colored
 import threading
+import keyboard
+
+
+def exit_monitor():
+    global stop
+    keyboard.wait('q')
+    stop = 1
 
 
 def show_cur_mouse_coordinate():
@@ -17,7 +24,7 @@ def show_cur_mouse_coordinate():
             print(f"\r当前鼠标坐标：({current_mouse_x}, {current_mouse_y})", end="")
 
 
-def do_search(search_bar_x, search_bar_y):
+def do_auto_search(search_bar_x, search_bar_y):
     pyautogui.moveTo(search_bar_x, search_bar_y, duration=0.2)
     pyautogui.click()
     characters = string.ascii_letters + string.digits
@@ -31,9 +38,16 @@ def do_search(search_bar_x, search_bar_y):
 # mouse_coordinate_monitor = threading.Thread(target=show_cur_mouse_coordinate)
 # mouse_coordinate_monitor.start()
 
-num_of_search = 30
+stop = 0
 
-for _ in tqdm(range(4), colour='green'):
-    do_search(-2200, 20)  # 搜索栏坐标
+num_of_search = 20
+
+exit_monitor = threading.Thread(target=exit_monitor)
+exit_monitor.start()
+
+for _ in tqdm(range(num_of_search), colour='green'):
+    if stop:
+        break
+    do_auto_search(-2200, 20)  # 搜索栏坐标
 
 print(colored("Search done.", 'blue'))
