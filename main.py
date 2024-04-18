@@ -24,8 +24,8 @@ def show_cur_mouse_coordinate():
             print(f"\r当前鼠标坐标：({current_mouse_x}, {current_mouse_y})", end="")
 
 
-def do_auto_search(search_bar_x, search_bar_y):
-    pyautogui.moveTo(search_bar_x, search_bar_y, duration=0.2)
+def do_auto_search(_search_bar_x, _search_bar_y):
+    pyautogui.moveTo(_search_bar_x, _search_bar_y)
     pyautogui.click()
     characters = string.ascii_letters + string.digits
     length = 6
@@ -39,15 +39,20 @@ def do_auto_search(search_bar_x, search_bar_y):
 # mouse_coordinate_monitor.start()
 
 stop = 0
-
-num_of_search = 20
-
 exit_monitor = threading.Thread(target=exit_monitor)
 exit_monitor.start()
+
+# 搜索次数
+num_of_search = 20
+
+# 搜索栏坐标
+search_bar_x = -2200
+search_bar_y = 20
 
 for _ in tqdm(range(num_of_search), colour='green'):
     if stop:
         break
-    do_auto_search(-2200, 20)  # 搜索栏坐标
+    do_auto_search(search_bar_x, search_bar_y)
+    time.sleep(5)
 
 print(colored("Search done.", 'blue'))
